@@ -3,8 +3,8 @@
 <title></title>
 <style>
 table {
-  background-color: black;
-  color: black;
+  bgcolor: black;
+  color: white;
   border: 1px solid white;
   text-align: center;
 }
