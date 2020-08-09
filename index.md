@@ -3,6 +3,7 @@
 <title></title>
 <style>
 table {
+  background-color: black;
   color: white;
   border: 1px solid white;
   text-align: center;
@@ -73,6 +74,8 @@ var waifu2 = {name:"Mashiro Shiina", series:"Sakura-sou no Pet na Kanojo - The P
 var waifu3 = {name:"Asuna Yuuki", series:"Sword Art Online", kakera: 1378, image:"w3"};
 
 var waifus = [waifu1, waifu2, waifu3]
+
+document.getElementById("name").innerHTML = waifus[0].name;
 
 </script>
 </html>
