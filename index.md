@@ -74,6 +74,5 @@ var waifu3 = {name:"Asuna Yuuki", series:"Sword Art Online", kakera: 1378, image
 
 var waifus = [waifu1, waifu2, waifu3]
 
-document.getElementById("name").innerHTML = waifus[0].name;
 </script>
 </html>
