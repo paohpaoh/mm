@@ -4,7 +4,7 @@
 <style>
 table {
   background-color: black;
-  color: white;
+  color: black;
   border: 1px solid white;
   text-align: center;
 }
