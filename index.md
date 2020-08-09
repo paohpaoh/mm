@@ -3,10 +3,12 @@
 <title></title>
 <style>
 table {
-  bgcolor: black;
   color: white;
   border: 1px solid white;
   text-align: center;
+}
+td {
+  background-color: black;
 }
 .wrapper {
   background-color: black;
