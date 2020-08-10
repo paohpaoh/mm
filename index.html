@@ -1,19 +1,34 @@
 <html>
 <head>
 <title></title>
+<link type="text/css" rel="stylesheet" media="screen" href="styles/jquery-sakura.css" />
+<link type="text/css" rel="stylesheet" media="screen" href="styles/jquery-sakura.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
+img {
+  width: 100%;
+}
 table {
-  color: white;
-  border: 1px solid white;
-  text-align: center;
+color: white;
+border: 1px solid white;
+text-align: center;
+margin-left: 20px;
+margin-right: 20px;
 }
 td {
+  max-width: 150px;
   background-color: black;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 .wrapper {
   background-color: black;
   color: white;
   font-family: Arial;
+  margin-top: -8px;
+  margin-left: -8px;
+  margin-right: -8px;
+  margin-bottom: -8px;
 }
 .header {
 padding-top: 20px;
@@ -27,57 +42,115 @@ font-family: Courier;
 color: white;
 }
 .name {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: bold;
+  padding-top: 8px;
+  padding-bottom: 2px;
 }
 .series {
-  font-size: 14px;
+  font-size: 12px;
   font-style: italic;
 }
 .kv {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
-  padding-left: 10px;
-  padding-right: 10px;
+}
+.image {
+  padding-top: 2px;
+}
+#kakera {
+  max-width: 30px;
 }
 </style>
 </head>
+<body>
 <div class="wrapper">
   <div class="header">the garden of waifu</div>
   <table>
     <tbody>
       <tr>
+        <td class="image">
+        </td>
+        <td class="image">
+          Image2
+        </td>
+        <td class="image">
+          Image3
+        </td>
+      </tr>
+      <tr>
         <td class="name">
-          Name
+          Name1
+        </td>
+        <td class="name">
+          Name2
+        </td>
+        <td class="name">
+          Name3
         </td>
       </tr>
       <tr>
         <td class="series">
-          Series
+          Series1
+        </td>
+        <td class="series">
+          Series2
+        </td>
+        <td class="series">
+          Series3
         </td>
       </tr>
       <tr>
         <td class="kv">
-          Kakera Value
+          Kakera Value1
         </td>
-      </tr>
-      <tr>
-        <td>
-          Image
+        <td class="kv">
+          Kakera Value2
+        </td>
+        <td class="kv">
+          Kakera Value3
         </td>
       </tr>
     </tbody>
   </table>
 </div>
+</body>
 
+<script src="scripts/jQuery_Sakura_Petals_Animation/jquery-sakura.js"></script>
+<script src="scripts/jQuery_Sakura_Petals_Animation/jquery-sakura.min.js"></script>
 <script>
-var waifu1 = {name:"Mai Sakurajima", series:"Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai - Rascal Does Not Dream of Bunny Girl Senpai", kakera:1256, image:"w1"};
-var waifu2 = {name:"Mashiro Shiina", series:"Sakura-sou no Pet na Kanojo - The Pet Girl of Sakurasou", kakera:742, image:"w2"};
-var waifu3 = {name:"Asuna Yuuki", series:"Sword Art Online", kakera: 1378, image:"w3"};
+// domReady
+$(function() {
+    $.fn.sakura();
+});
 
-var waifus = [waifu1, waifu2, waifu3]
+// windowLoad
+$(window).load(function() {
+    $.fn.sakura();
+});
+</script>
+<script type="text/javascript">
+window.onload = function() {
+  var waifu1 = {name:"Mai Sakurajima", series:"Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai - Rascal Does Not Dream of Bunny Girl Senpai", kv:1256, image:"images/w1.gif"};
+  var waifu2 = {name:"Mashiro Shiina", series:"Sakura-sou no Pet na Kanojo - The Pet Girl of Sakurasou", kv:742, image:"images/w2.jpg"};
+  var waifu3 = {name:"Asuna Yuuki", series:"Sword Art Online", kv:1378, image:"images/w3.jpg"};
 
-document.getElementById("name").innerHTML = waifus[0].name;
+  var waifus = [waifu1, waifu2, waifu3];
+  var crystal = document.createElement("img");
+  crystal.src = "Kakera_Crystal.png";
+  crystal.style.width = "16";
 
+  var a = document.createElement("img");
+  a.src = waifus[0].image;
+  var b = document.getElementsByClassName("image");
+  b[0].appendChild(a);
+  var x = document.getElementsByClassName("name");
+  x[0].innerHTML = waifus[0].name;
+  var y = document.getElementsByClassName("series");
+  y[0].innerHTML = waifus[0].series;
+  var z = document.getElementsByClassName("kv");
+  z[0].innerHTML = waifus[0].kv;
+  z[0].appendChild(crystal);
+}
 </script>
 </html>
