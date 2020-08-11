@@ -5,114 +5,168 @@
 <link type="text/css" rel="stylesheet" media="screen" href="styles/jquery-sakura.min.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
+body {
+  width: 100vw;
+  height: 100vh;
+  margin-bottom: 0px;
+}
 img {
   width: 100%;
 }
 table {
-color: white;
-border: 1px solid white;
-text-align: center;
-margin-left: 20px;
-margin-right: 20px;
+  color: white;
+  border: none;
+  text-align: center;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding-right: 25px;
+  position: relative;
 }
 td {
-  max-width: 150px;
-  background-color: black;
-  padding-left: 20px;
-  padding-right: 20px;
+  background-color: transparent;
+  border: none;
 }
 .wrapper {
+  width: 100%;
+  height: 100%;
   background-color: black;
   color: white;
   font-family: Arial;
   margin-top: -8px;
   margin-left: -8px;
   margin-right: -8px;
-  margin-bottom: -8px;
+  margin-bottom: 0px;
 }
 .header {
-padding-top: 20px;
-padding-bottom: 80px;
-padding-left: 10px;
-margin-left: auto;
-margin-right: auto;
-font-size: 48px;
-font-weight: bold;
-font-family: Courier;
-color: white;
+  padding-top: 20px;
+  padding-bottom: 80px;
+  padding-left: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 48px;
+  font-weight: bold;
+  font-family: Courier;
+  color: white;
+  position: relative;
+  height: 15px;
 }
 .name {
-  font-size: 19px;
+  display: table-cell;
+  font-size: 15px;
   font-weight: bold;
-  padding-top: 8px;
+  padding-top: 6px;
   padding-bottom: 2px;
+  text-align: center;
+  width: 110px;
+  height: 100%;
+  border: none;
 }
 .series {
   font-size: 12px;
   font-style: italic;
+  font-weight: normal;
+  width: 110px;
+  height: 100%;
+  border: none;
+  vertical-align: middle;
 }
 .kv {
   font-size: 12px;
   font-weight: bold;
+  width: 150px;
+  font-style: normal;
+  border: none;
+  float: bottom;
+}
+.crystal {
+  width: 16px;
+  vertical-align: bottom;
 }
 .image {
-  padding-top: 2px;
+  padding-top: 25px;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 116px;
 }
-#kakera {
-  max-width: 30px;
+.hero-image {
+  background-image: url(images/background5a.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  width: 100%;
+}
+.select-box {
+  float: right;
+  padding-right: 310px;
+  padding-top: 20px;
+  position: relative;
+}
+.select-box select {
+}
+.select-selected {
+  background-color: white;
+}
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid white;
+  border-color: #fff transparent transparent transparent;
+}
+.select-selected.select-arrow-active:after {
+  border:color: transparent transparent #fff transparent;
+  top: 7px;
+}
+.select-items div,.select-selected {
+  color: purple;
+  padding: 8px 16px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+.select-items {
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+#waifuTable {
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div class="header">the garden of waifu</div>
-  <table>
-    <tbody>
-      <tr>
-        <td class="image">
-        </td>
-        <td class="image">
-          Image2
-        </td>
-        <td class="image">
-          Image3
-        </td>
-      </tr>
-      <tr>
-        <td class="name">
-          Name1
-        </td>
-        <td class="name">
-          Name2
-        </td>
-        <td class="name">
-          Name3
-        </td>
-      </tr>
-      <tr>
-        <td class="series">
-          Series1
-        </td>
-        <td class="series">
-          Series2
-        </td>
-        <td class="series">
-          Series3
-        </td>
-      </tr>
-      <tr>
-        <td class="kv">
-          Kakera Value1
-        </td>
-        <td class="kv">
-          Kakera Value2
-        </td>
-        <td class="kv">
-          Kakera Value3
-        </td>
-      </tr>
-    </tbody>
+  <div class="hero-image">
+  <div class="header">the garden of waifu
+    <div class="select-box" style="width: 100px;">
+      <select>
+        <option value="0">Select sort option:</option>
+        <option value="1">- [INACTIVE] Sort by kakera value</option>
+        <option value="2">- [INACTIVE] Sort by series</option>
+        <option value="3">- [INACTIVE] Sort by best girl</option>
+        <option value="4">- [INACTIVE] View statistics</option>
+      </select>
+    </div>
+  </div>
+  <table id="waifuTable">
   </table>
+  </div>
 </div>
 </body>
 
@@ -126,20 +180,399 @@ $(function() {
 
 // windowLoad
 $(window).load(function() {
-    $.fn.sakura();
+    $.fn.sakura({
+        blowAnimations: [
+            'blow-soft-left',
+        ],                   // Horizontal movement animation names
+        className: 'sakura', // Class name to use
+        fallSpeed: 10,        // Factor for petal fall speed
+        maxSize: 14,         // Maximum petal size
+        minSize: 9,          // Minimum petal size
+        newOn: 50000,          // Interval after which a new petal is added
+        swayAnimations: [    // Swaying animation names
+            'sway-0',
+        ]
+    });
 });
 </script>
 <script type="text/javascript">
+  var waifu001 = {name:"Mai Sakurajima", series:"Seishun Buta Yarou", kv:1256, image:"images/w1.gif"};
+  var waifu002 = {name:"Mashiro Shiina", series:"Sakura-sou no Pet na Kanojo", kv:742, image:"images/w2.png"};
+  var waifu003 = {name:"Urara Shiraishi", series:"Yamada-kun to 7-nin no Majo", kv:247, image:"images/w3.png"};
+  var waifu004 = {name:"Sinon", series:"Sword Art Online", kv:1106, image:"images/w4.png"};
+  var waifu005 = {name:"Kotori Itsuka", series:"Date A Live", kv:247, image:"images/w5.png"};
+  var waifu006 = {name:"Nodoka Toyohama", series:"Seishun Buta Yarou ", kv:180, image:"images/w6.png"};
+  var waifu007 = {name:"Chitoge Kirisaki", series:"Nisekoi", kv:678, image:"images/w7.gif"};
+  var waifu008 = {name:"Kosaki Onodera", series:"Nisekoi", kv:480, image:"images/w8.gif"};
+  var waifu009 = {name:"Chika Fujiwara", series:"Kaguya-sama wa Kokurasetai", kv:1238, image:"images/w9.gif"};
+  var waifu010 = {name:"Maki Nishikino", series:"Love Live! School Idol Project", kv:480, image:"images/w10.gif"};
+  var waifu011 = {name:"Mikoto Misaka", series:"Toaru", kv:537, image:"images/w11.gif"};
+  var waifu012 = {name:"Kuroneko", series:"OreImo", kv:214, image:"images/w12.gif"};
+  var waifu013 = {name:"Rory Mercury", series:"GATE", kv:531, image:"images/w13.png"};
+  var waifu014 = {name:"Akame", series:"Akame ga Kill!", kv:1214, image:"images/w14.gif"};
+  var waifu015 = {name:"Alice Synthesis Thirty", series:"Sword Art Online", kv:800, image:"images/w15.gif"};
+  var waifu016 = {name:"Asuna", series:"Sword Art Online", kv:1400, image:"images/w16.gif"};
+  var waifu017 = {name:"Sakura Yae", series:"Honkai Impact 3rd", kv:328, image:"images/w17.png"};
+  var waifu018 = {name:"Kuroko Shirai", series:"Toaru", kv:148, image:"images/w18.gif"};
+  var waifu019 = {name:"Reina Izumi", series:"Musaigen no Phantom World", kv:161, image:"images/w19.png"};
+  var waifu020 = {name:"Kurisu Makise", series:"Steins;Gate", kv:1029, image:"images/w20.gif"};
+  var waifu021 = {name:"Megumi Katou", series:"Saenai Heroine no Sodatekata", kv:324, image:"images/w21.gif"};
+  var waifu022 = {name:"Madoka Kaname", series:"Mahou Shoujo Madoka★Magica", kv:437, image:"images/w22.gif"};
+  var waifu023 = {name:"Homura Akemi", series:"Mahou Shoujo Madoka★Magica", kv:438, image:"images/w23.gif"};
+  var waifu024 = {name:"Iroha Tamaki", series:"Magia Record", kv:96, image:"images/w24.png"};
+  var waifu025 = {name:"Yachiyo Nanami", series:"Magia Record", kv:85, image:"images/w25.gif"};
+  var waifu026 = {name:"Hestia", series:"DanMachi", kv:967, image:"images/w26.gif"};
+  var waifu027 = {name:"Ayase Aragaki", series:"OreImo", kv:135, image:"images/w27.png"};
+  var waifu028 = {name:"Asagi Aiba", series:"Strike the Blood", kv:105, image:"images/w28.png"};
+  var waifu029 = {name:"Chise Hatori", series:"Mahoutsukai no Yome", kv:294, image:"images/w29.gif"};
+  var waifu030 = {name:"Kizuna AI", series:"Kizuna AI Inc.", kv:567, image:"images/w30.png"};
+  var waifu031 = {name:"Lucina", series:"Fire Emblem: Awakening", kv:276, image:"images/w31.png"};
+  var waifu032 = {name:"Mathilde Saint-Omer", series:"Shakugan no Shana", kv:47, image:"images/w32.png"};
+  var waifu033 = {name:"Ritsu Tainaka", series:"K-On!", kv:296, image:"images/w33.gif"};
+  var waifu034 = {name:"Kanna Hase", series:"Sakurasou no Pet na Kanojo", kv:42, image:"images/w34.png"};
+  var waifu035 = {name:"Nene Saikyou", series:"Rakudai Kishi no Cavalry ", kv:73, image:"images/w35.png"};
+  var waifu036 = {name:"Haruka Takayama", series:"Sakura Trick", kv:88, image:"images/w36.png"};
+  var waifu037 = {name:"Shizuku Kurogane", series:"Rakudai Kishi no Cavalry ", kv:88, image:"images/w37.gif"};
+  var waifu038 = {name:"Nagisa Akatsuki", series:"Strike the Blood", kv:80, image:"images/w38.png"};
+  var waifu039 = {name:"Gardevoir (PMD2)", series:"Pokémon Mystery Dungeon", kv:86, image:"images/w39.png"};
+  var waifu040 = {name:"Nero (BC)", series:"Black Clover", kv:278, image:"images/w40.png"};
+  var waifu041 = {name:"Reina Akatsuki", series:"Strike the Blood", kv:70, image:"images/w41.png"};
+  var waifu042 = {name:"Rin Tohsaka (Kaleid)", series:"Fate/Kaleid Liner PRISMA☆ILLYA", kv:140, image:"images/w42.png"};
+  var waifu043 = {name:"Yachiru Kusajishi", series:"Bleach", kv:106, image:"images/w43.png"};
+  var waifu044 = {name:"Macrophage", series:"Hataraku Saibou", kv:116, image:"images/w44.png"};
+  var waifu045 = {name:"Misaka 10032", series:"Toaru", kv:134, image:"images/w45.gif"};
+  var waifu046 = {name:"Satsuki Kiryuuin", series:"Kill la Kill ", kv:398, image:"images/w46.gif"};
+  var waifu047 = {name:"Rita Rossweisse", series:"Honkai Impact 3rd", kv:130, image:"images/w47.png"};
+  var waifu048 = {name:"Future Lucy", series:"Fairy Tail ", kv:88, image:"images/w48.gif"};
+  var waifu049 = {name:"Virgo", series:"Fairy Tail ", kv:197, image:"images/w49.gif"};
+  var waifu050 = {name:"Kaori Nakaseko", series:"Hibike! Euphonium", kv:52, image:"images/w50.png"};
+  var waifu051 = {name:"Rinko Yamato", series:"Ore Monogatari!!", kv:102, image:"images/w51.png"};
+  var waifu052 = {name:"Mars (KN)", series:"The World God Only Knows", kv:50, image:"images/w52.png"};
+  var waifu053 = {name:"Cynthia", series:"Pokémon Diamond/Pearl/Platinum", kv:705, image:"images/w53.png"};
+  var waifu054 = {name:"Doge", series:":thinking:", kv:591, image:"images/w54.png"};
+  var waifu055 = {name:"Sayaka Kirasaka", series:"Strike the Blood", kv:101, image:"images/w55.png"};
+  var waifu056 = {name:"Yui Yuigahama", series:"Yahari Ore no Seishun Love Comedy Machigatteiru.", kv:541, image:"images/w56.gif"};
+  var waifu057 = {name:"Celty Sturluson", series:"Durarara!!", kv:321, image:"images/w57.png"};
+  var waifu058 = {name:"Kiseki Kusanagi", series:"Taimadou Gakuen 35", kv:53, image:"images/w58.png"};
+  var waifu059 = {name:"Nurse Joy", series:"Pokémon: Indigo League", kv:170, image:"images/w59.png"};
+  var waifu060 = {name:"Mio Akiyama", series:"K-On!", kv:524, image:"images/w60.gif"};
+  var waifu061 = {name:"Nyan Cat", series:":thinking:", kv:550, image:"images/w61.png"};
+  var waifu062 = {name:"Dark Magician Girl", series:"Yu-Gi-Oh!", kv:312, image:"images/w62.gif"};
+  var waifu063 = {name:"Kobayashi", series:"Kobayashi-san Chi no Maid Dragon", kv:493, image:"images/w63.gif"};
+  var waifu064 = {name:"Sakura Matou", series:"Fate/stay night", kv:534, image:"images/w64.gif"};
+  var waifu065 = {name:"Ada Wong", series:"Resident Evil 2", kv:145, image:"images/w65.png"};
+  var waifu066 = {name:"Usagi Tsukino", series:"Pretty Soldier Sailor Moon", kv:547, image:"images/w66.png"};
+  var waifu067 = {name:"Kaguya Yamai", series:"Date A Live", kv:235, image:"images/w67.png"};
+  var waifu068 = {name:"Ryuujou (AL)", series:"Azur Lane", kv:48, image:"images/w68.png"};
+  var waifu069 = {name:"Daidouji", series:"Senran Kagura", kv:164, image:"images/w69.png"};
+  var waifu070 = {name:"Thief", series:"MapleStory 2", kv:41, image:"images/w70.png"};
+  var waifu071 = {name:"Shouko Makinohara", series:"Seishun Buta Yarou", kv:249, image:"images/w71.gif"};
+  var waifu072 = {name:"NK Cell", series:"Hataraku Saibou", kv:61, image:"images/w72.png"};
+  var waifu073 = {name:"Vanessa Enoteca", series:"Black Clover", kv:185, image:"images/w73.gif"};
+  var waifu074 = {name:"Harumi Taniguchi", series:"Citrus", kv:105, image:"images/w74.png"};
+  var waifu075 = {name:"Kurumi Kumamakura", series:"Musaigen no Phantom World", kv:77, image:"images/w75.png"};
+  var waifu076 = {name:"Muramasa (PotK)", series:"Phantom of the Kill", kv:48, image:"images/w76.png"};
+  var waifu077 = {name:"Ria Ami", series:"Magia Record", kv:45, image:"images/w77.png"};
+  var waifu078 = {name:"Ur", series:"Fairy Tail", kv:101, image:"images/w78.png"};
+  var waifu079 = {name:"Nagisa Furukawa", series:"Clannad", kv:268, image:"images/w79.png"};
+  var waifu080 = {name:"Mei Raiden", series:"Honkai Impact 3rd", kv:182, image:"images/w80.png"};
+  var waifu081 = {name:"Sarada Uchiha", series:"Boruto: Naruto Next Generations", kv:272, image:"images/w81.gif"};
+  var waifu082 = {name:"Herrscher of Lightning", series:"Honkai Impact 3rd", kv:54, image:"images/w82.png"};
+  var waifu083 = {name:"Last Order", series:"Toaru", kv:158, image:"images/w83.gif"};
+  var waifu084 = {name:"Moeka Kiryuu", series:"Steins;Gate", kv:138, image:"images/w84.png"};
+  var waifu085 = {name:"Ultear Milkovich", series:"Fairy Tail", kv:184, image:"images/w85.gif"};
+  var waifu086 = {name:"Lisa Yadomaru", series:"Bleach", kv:70, image:"images/w86.png"};
+  var waifu087 = {name:"Levi Kazama", series:"Trinity Seven", kv:209, image:"images/w87.png"};
+  var waifu088 = {name:"Toyomi Fujiwara", series:"Kaguya-sama wa Kokurasetai", kv:154, image:"images/w88.png"};
+  var waifu089 = {name:"Kurome", series:"Akame ga Kill!", kv:312, image:"images/w89.gif"};
+  var waifu090 = {name:"Konoha Shizumi", series:"Magia Record", kv:48, image:"images/w90.png"};
+  var waifu091 = {name:"Justeaze Lizrich von Einzbern", series:"Fate/stay night", kv:55, image:"images/w91.png"};
+  var waifu092 = {name:"Rin", series:"Shelter", kv:511, image:"images/w92.gif"};
+  var waifu093 = {name:"Tuka Luna Marceau", series:"GATE", kv:106, image:"images/w93.png"};
+  var waifu094 = {name:"Chisa Yukizome", series:"Danganronpa 3", kv:156, image:"images/w94.png"};
+  var waifu095 = {name:"Kurenai Yuuhi", series:"Naruto", kv:150, image:"images/w95.png"};
+  var waifu096 = {name:"Lisbeth", series:"GATE", kv:286, image:"images/w96.gif"};
+  var waifu097 = {name:"Kouko Kaga", series:"Golden Time", kv:194, image:"images/w97.gif"};
+  var waifu098 = {name:"Subaru Mitejima", series:"Sousei no Onmyouji", kv:54, image:"images/w98.png"};
+  var waifu099 = {name:"Alluka Zoldyck", series:"Hunter × Hunter", kv:353, image:"images/w99.png"};
+  var waifu100 = {name:"Lisanna Strauss", series:"Fairy Tail", kv:177, image:"images/w100.png"};
+  var waifu101 = {name:"Noelle Silva", series:"Black Clover", kv:479, image:"images/w101.gif"};
+  var waifu102 = {name:"Elsie", series:"The World God Only Knows", kv:116, image:"images/w102.gif"};
+  var waifu103 = {name:"Mayu Takasaki", series:"Sakurasou no Pet na Kanojo", kv:47, image:"images/w103.png"};
+  var waifu104 = {name:"Tart", series:"Magia Record", kv:49, image:"images/w104.png"};
+  var waifu105 = {name:"Kizmel", series:"Sword Art Online", kv:95, image:"images/w105.png"};
+  var waifu106 = {name:"Benio Adashino", series:"Sousei no Onmyouji", kv:159, image:"images/w106.png"};
+  var waifu107 = {name:"Azura", series:"Fire Emblem Fates", kv:168, image:"images/w107.png"};
+  var waifu108 = {name:"Lucy Ashley", series:"Fairy Tail", kv:122, image:"images/w108.gif"};
+  var waifu109 = {name:"Umi Sonoda", series:"Love Live! School Idol Project", kv:340, image:"images/w109.gif"};
+  var waifu110 = {name:"Elma", series:"Kobayashi-san Chi no Maid Dragon", kv:438, image:"images/w110.gif"};
+  var waifu111 = {name:"Nico Yazawa", series:"Love Live! School Idol Project", kv:762, image:"images/w111.gif"};
+  var waifu112 = {name:"Komachi Hikigaya", series:"Yahari Ore no Seishun Love Comedy wa Machigatteiru", kv:166, image:"images/w112.gif"};
+  var waifu113 = {name:"Maki Shijo", series:"Kaguya-sama wa Kokurasetai", kv:81, image:"images/w114.png"};
+  var waifu114 = {name:"Yukina Himeragi", series:"Strike the Blood", kv:185, image:"images/w113.png"};
+  var waifu115 = {name:"Mafuyu Oribe", series:"Seikon no Qwaser", kv:76, image:"images/w115.png"};
+  var waifu116 = {name:"Momoka Aizawa", series:"Honoo no Haramase Paidol My ★ Star Gakuen Z", kv:78, image:"images/w116.png"};
+  var waifu117 = {name:"Inverse Tohka", series:"Date A Live", kv:287, image:"images/w117.png"};
+  var waifu118 = {name:"Haruhi Suzumiya", series:"Suzumiya Haruhi no Yuuutsu", kv:465, image:"images/w118.gif"};
+  var waifu119 = {name:"Sasaki", series:"Suzumiya Haruhi no Yuuutsu", kv:47, image:"images/w119.png"};
+  var waifu120 = {name:"Rui Tachibana", series:"Domestic na Kanojo", kv:415, image:"images/w120.png"};
+  var waifu121 = {name:"Seele Vollerei", series:"Honkai Impact 3rd", kv:185, image:"images/w121.gif"};
+  var waifu122 = {name:"Momoko Togame", series:"Magia Record", kv:60, image:"images/w122.png"};
+  var waifu123 = {name:"Colette Brunel", series:"Tales of Symphonia", kv:71, image:"images/w123.png"};
+  var waifu124 = {name:"Alice Zuberg", series:"Sword Art Online", kv:340, image:"images/w124.png"};
+  var waifu125 = {name:"Haqua", series:"The World God Only Knows", kv:113, image:"images/w125.gif"};
+  var waifu126 = {name:"Houki Shinonono", series:"Infinite Stratos", kv:148, image:"images/w126.png"};
+  var waifu127 = {name:"Skyla", series:"Pokémon Black/White", kv:237, image:"images/w127.png"};
+  var waifu128 = {name:"Nintendo Switch-chan", series:"Meme Girls", kv:152, image:"images/w128.png"};
+  var waifu129 = {name:"Ai Fuyuumi", series:"Oreshura", kv:132, image:"images/w129.png"};
+  var waifu130 = {name:"Ashley Taylor", series:"Magia Record", kv:44, image:"images/w130.png"};
+  var waifu131 = {name:"Kanon Nakagawa", series:"The World God Only Knows", kv:93, image:"images/w131.gif"};
+  var waifu132 = {name:"Karen Kujou", series:"Kiniro Mosaic", kv:197, image:"images/w132.gif"};
+  var waifu133 = {name:"Yunyun", series:"Kono Subarashii Sekai ni Shukufuku wo!", kv:639, image:"images/w133.gif"};
+  var waifu134 = {name:"Yuki Kusakabe", series:"Demi-chan wa Kataritai", kv:69, image:"images/w134.png"};
+  var waifu135 = {name:"Fana", series:"Black Clover", kv:110, image:"images/w135.png"};
+  var waifu136 = {name:"Hina Tachibana", series:"Domestic na Kanojo", kv:226, image:"images/w136.png"};
+  var waifu137 = {name:"Rumia Tingel", series:"Rokudenashi Majutsu Koushi to Akashic Records", kv:187, image:"images/w137.png"};
+  var waifu138 = {name:"Yuki Nonaka", series:"Shinmai Maou no Testament", kv:189, image:"images/w138.png"};
+  var waifu139 = {name:"Mio Naruse", series:"Shinmai Maou no Testament", kv:380, image:"images/w139.png"};
+  var waifu140 = {name:"Bulma", series:"Dragon Ball", kv:499, image:"images/w140.png"};
+  var waifu141 = {name:"Fanatio Synthesis Two", series:"Sword Art Online", kv:118, image:"images/w141.png"};
+  var waifu142 = {name:"Goombette", series:"Super Crown", kv:186, image:"images/w142.png"};
+  var waifu143 = {name:"Satone Shichimiya", series:"Chuunibyou demo Koi ga Shitai!", kv:159, image:"images/w143.gif"};
+  var waifu144 = {name:"Hikari Takanashi", series:"Demi-chan wa Kataritai", kv:117, image:"images/w144.gif"};
+  var waifu145 = {name:"Nurse Joy of Akala Island", series:"Pokémon the Series: Sun & Moon", kv:52, image:"images/w145.png"};
+  var waifu146 = {name:"Irisviel von Einzbern (Kaleid)", series:"Fate/Kaleid Liner PRISMA☆ILLYA", kv:81, image:"images/w146.png"};
+  var waifu147 = {name:"Calamity Jane", series:"Fate/Grand Order", kv:54, image:"images/w147.png"};
+  var waifu148 = {name:"Esdeath", series:"Akame ga Kill!", kv:994, image:"images/w148.gif"};
+  var waifu149 = {name:"Korra", series:"The Legend of Korra", kv:244, image:"images/w149.gif"};
+  var waifu150 = {name:"Tsubasa Minamino", series:"Yuru Yuri", kv:48, image:"images/w150.png"};
+  var waifu151 = {name:"Hinami Fueguchi", series:"Tokyo Ghoul", kv:202, image:"images/w151.png"};
+  var waifu152 = {name:"Kurumi Nonaka", series:"Shinmai Maou no Testament", kv:102, image:"images/w152.png"};
+  var waifu153 = {name:"Rikka Takanashi", series:"Chuunibyou demo Koi ga Shitai!", kv:934, image:"images/w153.gif"};
+  var waifu154 = {name:"Mitsuki Sonoda", series:"Sakura Trick", kv:58, image:"images/w154.png"};
+  var waifu155 = {name:"Mukuro Hoshimiya", series:"Date A Live", kv:142, image:"images/w155.png"};
+  var waifu156 = {name:"Lightning", series:"Final Fantasy XIII", kv:153, image:"images/w156.gif"};
+  var waifu157 = {name:"Forcas", series:"Phantom of the Kill", kv:63, image:"images/w157.png"};
+  var waifu158 = {name:"Winry Rockbell", series:"Fullmetal Alchemist", kv:482, image:"images/w158.gif"};
+  var waifu159 = {name:"Oz (MS)", series:"MapleStory", kv:41, image:"images/w159.png"};
+  var waifu160 = {name:"Mitsuko Kongou", series:"Toaru", kv:61, image:"images/w160.gif"};
+  var waifu161 = {name:"Enju Aihara", series:"GATE", kv:203, image:"images/w161.gif"};
+  var waifu162 = {name:"Maki Oze", series:"Enen no Shouboutai", kv:446, image:"images/w162.gif"};
+  var waifu163 = {name:"Youko Inokuma", series:"Kiniro Mosaic", kv:57, image:"images/w163.png"};
+  var waifu164 = {name:"Meru Anna", series:"Magia Record", kv:41, image:"images/w164.png"};
+  var waifu165 = {name:"Sistine Fibel", series:"Rokudenashi Majutsu Koushi to Akashic Records", kv:327, image:"images/w165.png"};
+  var waifu166 = {name:"Frosch", series:"Fairy Tail", kv:156, image:"images/w166.png"};
+  var waifu167 = {name:"Illyasviel von Einzbern", series:"Fate/stay night", kv:472, image:"images/w167.png"};
+  var waifu168 = {name:"Kotori Minami", series:"Love Live! School Idol Project", kv:383, image:"images/w168.png"};
+  var waifu169 = {name:"Krulcifer Einfolk", series:"Saijaku Muhai no Bahamut", kv:171, image:"images/w169.png"};
+  var waifu170 = {name:"Orihime Inoue", series:"Bleach", kv:409, image:"images/w170.png"};
+  var waifu171 = {name:"Ako Tamaki", series:"Netoge no Yome wa Onnanoko ja Nai to Omotta?", kv:241, image:"images/w171.gif"};
+  var waifu172 = {name:"Eli Ayase", series:"Love Live! School Idol Project", kv:314, image:"images/w172.png"};
+  var waifu173 = {name:"Lillie", series:"Pokémon Sun/Moon", kv:364, image:"images/w173.gif"};
+  var waifu174 = {name:"Frenda Seivelun", series:"Toaru", kv:66, image:"images/w174.png"};
+  var waifu175 = {name:"Arisa Meigo", series:"Toaru", kv:52, image:"images/w175.png"};
+  var waifu176 = {name:"Jill Valentine", series:"Resident Evil 1", kv:108, image:"images/w176.png"};
+  var waifu177 = {name:"Bouquet", series:"Cyberdimension Neptunia: 4 Goddesses Online", kv:55, image:"images/w177.png"};
+  var waifu178 = {name:"Juvia Lockser", series:"Fairy Tail", kv:557, image:"images/w178.png"};
+  var waifu179 = {name:"Mami Tomoe", series:"Mahou Shoujo Madoka★Magica", kv:256, image:"images/w179.gif"};
+  var waifu180 = {name:"Rin Tohsaka (CS)", series:"Capsule Servant", kv:43, image:"images/w180.png"};
+  var waifu181 = {name:"Narberal Gamma", series:"Overlord", kv:308, image:"images/w181.png"};
+  var waifu182 = {name:"Kasen Ibaraki", series:"Touhou Project (Windows Canon)", kv:82, image:"images/w182.png"};
+  var waifu183 = {name:"Illyasviel von Einzbern (Kaleid)", series:"Fate/Kaleid Liner PRISMA☆ILLYA", kv:269, image:"images/w183.gif"};
+  var waifu184 = {name:"Miku Izayoi", series:"Date A Live", kv:242, image:"images/w184.png"};
+  var waifu185 = {name:"Kyou Fujibayashi", series:"Clannad", kv:144, image:"images/w185.png"};
+  var waifu186 = {name:"Penelo", series:"Final Fantasy XII", kv:47, image:"images/w186.png"};
+  var waifu187 = {name:"Mayura Otomi", series:"Sousei no Onmyouji", kv:83, image:"images/w187.png"};
+  var waifu188 = {name:"Raphiel Shiraha Ainsworth", series:"Gabriel DropOut", kv:283, image:"images/w188.png"};
+  var waifu189 = {name:"Sister Lily", series:"Black Clover", kv:122, image:"images/w189.png"};
+  var waifu190 = {name:"Shimeji", series:"Fantasista Doll", kv:55, image:"images/w190.png"};
+  var waifu191 = {name:"Seishirou Tsugumi", series:"Nisekoi", kv:259, image:"images/w191.png"};
+  var waifu192 = {name:"Tsubaki Shinra", series:"High School DxD", kv:145, image:"images/w192.png"};
+  var waifu193 = {name:"Naoto Shirogane", series:"Persona 4", kv:324, image:"images/w193.png"};
+  var waifu194 = {name:"Tenko Chabashira", series:"Danganronpa V3: Killing Harmony", kv:140, image:"images/w194.png"};
+  var waifu195 = {name:"Elbia Hanaiman", series:"Outbreak Company", kv:93, image:"images/w195.png"};
+  var waifu196 = {name:"Mafuyu Hoshikawa", series:"Blend S", kv:269, image:"images/w196.gif"};
+  var waifu197 = {name:"Suzune Horikita", series:"Classroom of the Elite", kv:390, image:"images/w197.png"};
+  var waifu198 = {name:"Kana Kimishima", series:"Parasyte -the maxim-", kv:110, image:"images/w198.png"};
+  var waifu199 = {name:"Nayuta Kani", series:"Imouto sae Ireba Ii.", kv:254, image:"images/w199.png"};
+  var waifu200 = {name:"Nanami Aoyama", series:"Sakurasou no Pet na Kanojo", kv:172, image:"images/w200.png"};
+  var waifu201 = {name:"Kanoko Kikuchiya", series:"Velvet Kiss", kv:69, image:"images/w201.png"};
+  var waifu202 = {name:"Amenonuhoko", series:"Phantom of the Kill", kv:44, image:"images/w202.png"};
+  var waifu203 = {name:"Levy McGarden", series:"Fairy Tail", kv:329, image:"images/w203.gif"};
+  var waifu204 = {name:"Rika Ayano", series:"Magia Record", kv:46, image:"images/w204.png"};
+  var waifu205 = {name:"Ruby Rose", series:"RWBY", kv:616, image:"images/w205.png"};
+  var waifu206 = {name:"Yui Kanakura", series:"Nisekoi", kv:92, image:"images/w206.png"};
+  var waifu207 = {name:"Rita Melpheus", series:"Isekai de Skill wo Kaitai shitara Cheat na Yome ga", kv:60, image:"images/w207.png"};
+  var waifu208 = {name:"Pusheen", series:"Pusheen", kv:213, image:"images/w208.gif"};
+  var waifu209 = {name:"Carla", series:"GATE", kv:120, image:"images/w209.png"};
+  var waifu210 = {name:"Lusamine", series:"Pokémon Sun/Moon", kv:196, image:"images/w210.png"};
+  var waifu211 = {name:"Bronya Zaychik", series:"Honkai Impact 3rd", kv:147, image:"images/w211.gif"};
+  var waifu212 = {name:"Kiriha Kisaki", series:"Strike the Blood", kv:76, image:"images/w212.png"};
+  var waifu213 = {name:"Fitoria", series:"Tate no Yuusha no Nariagari", kv:150, image:"images/w213.png"};
+  var waifu214 = {name:"Yui Kiriyama", series:"Kokoro Connect", kv:61, image:"images/w214.png"};
+  var waifu215 = {name:"Elise Angel", series:"Assassin's Pride", kv:93, image:"images/w215.png"};
+  var waifu216 = {name:"Meiko Honma", series:"Anohana: The Flower We Saw That Day", kv:378, image:"images/w216.gif"};
+  var waifu217 = {name:"Durandal", series:"Honkai Impact 3rd", kv:129, image:"images/w217.png"};
+  var waifu218 = {name:"Grimoire", series:"Phantom of the Kill", kv:48, image:"images/w218.png"};
+  var waifu219 = {name:"Koharu Honda", series:"Sword Art Online: Integral Factor", kv:61, image:"images/w219.png"};
+  var waifu220 = {name:"Kusanagi", series:"Phantom of the Kill", kv:45, image:"images/w220.png"};
+  var waifu221 = {name:"Eydis Synthesis Ten", series:"Sword Art Online: Alicization Blading", kv:60, image:"images/w221.png"};
+  var waifu222 = {name:"Aries", series:"Fairy Tail", kv:199, image:"images/w222.png"};
+  var waifu223 = {name:"Mora Chester", series:"Rokka no Yuusha", kv:50, image:"images/w223.png"};
+  var waifu224 = {name:"Conis", series:"One Piece", kv:56, image:"images/w224.png"};
+  var waifu225 = {name:"Cassius", series:"Phantom of the Kill", kv:56, image:"images/w225.png"};
+  var waifu226 = {name:"Irena", series:"MapleStory", kv:39, image:"images/w226.jpg"};
+  var waifu227 = {name:"Luviagelita Edelfelt (Kaleid)", series:"Fate/Kaleid Liner PRISMA☆ILLYA", kv:74, image:"images/w227.png"};
+  var waifu228 = {name:"Shion (TenSura)", series:"Tensei shitara Slime Datta Ken", kv:210, image:"images/w228.png"};
+  var waifu229 = {name:"Beatrice Flowerchild", series:"Fate/Kaleid Liner PRISMA☆ILLYA", kv:58, image:"images/w229.png"};
+  var waifu230 = {name:"Christina Beltram", series:"Seirei Gensouki", kv:56, image:"images/w230.png"};
+  var waifu231 = {name:"Mitama Yakumo", series:"Magia Record", kv:74, image:"images/w231.png"};
+  var waifu232 = {name:"Irene Belserion", series:"Fairy Tail", kv:149, image:"images/w232.png"};
+  var waifu233 = {name:"Aquarius", series:"Fairy Tail", kv:214, image:"images/w233.png"};
+  var waifu234 = {name:"Mio Aoyama", series:"The World God Only Knows", kv:55, image:"images/w234.png"};
+  var waifu235 = {name:"Le Fay Pendragon", series:"High School DxD", kv:103, image:"images/w235.gif"};
+  var waifu236 = {name:"Serket", series:"Destiny Child", kv:39, image:"images/w236.png"};
+  var waifu237 = {name:"Ernesta Kühne", series:"Gakusen Toshi Asterisk", kv:72, image:"images/w237.png"};
+  var waifu238 = {name:"Yona", series:"Akatsuki no Yona", kv:338, image:"images/w238.gif"};
+  var waifu239 = {name:"Angelica Ainsworth", series:"Fate/Kaleid Liner PRISMA☆ILLYA", kv:141, image:"images/w239.png"};
+  var waifu240 = {name:"Hazuki Yusa", series:"Magia Record", kv:46, image:"images/w240.png"};
+  var waifu241 = {name:"Rindou (KuTsu)", series:"Kunoichi Tsubaki no Mune no Uchi", kv:42, image:"images/w241.png"};
+  var waifu242 = {name:"An Shiraishi", series:"Project Sekai: Colorful Stage!", kv:51, image:"images/w242.png"};
+  var waifu243 = {name:"Mai Kawakami", series:"Musaigen no Phantom World", kv:216, image:"images/w243.png"};
+  var waifu244 = {name:"Ayaka Mariko", series:"Magia Record", kv:42, image:"images/w244.png"};
+  var waifu245 = {name:"Asia Argento", series:"High School DxD", kv:467, image:"images/w245.png"};
+  var waifu246 = {name:"Cocoro Yazawa", series:"Love Live! School Idol Project", kv:67, image:"images/w246.png"};
+  var waifu247 = {name:"Anko Iisuna", series:"Ore, Twintail ni Narimasu.", kv:50, image:"images/w247.png"};
+  var waifu248 = {name:"Shizuku Kitayama", series:"Mahouka Koukou no Rettousei", kv:77, image:"images/w248.png"};
+  var waifu249 = {name:"Stern The Destructor", series:"Mahou Shoujo Lyrical Nanoha", kv:46, image:"images/w249.png"};
+  var waifu250 = {name:"Gemini", series:"Fairy Tail", kv:90, image:"images/w250.gif"};
+  var waifu251 = {name:"Yui (SAO)", series:"Sword Art Online", kv:346, image:"images/w251.gif"};
+  var waifu252 = {name:"Misaka 9982", series:"Toaru", kv:74, image:"images/w252.png"};
+  var waifu253 = {name:"Yui Hirasawa", series:"K-On!", kv:502, image:"images/w253.gif"};
+  var waifu254 = {name:"Hercule", series:"Phantom of the Kill", kv:56, image:"images/w254.png"};
+  var waifu255 = {name:"Cardinal", series:"Sword Art Online", kv:113, image:"images/w255.png"};
+  var waifu256 = {name:"December", series:"Strike the Blood", kv:39, image:"images/w256.png"};
+  var waifu257 = {name:"Tatsumaki", series:"One Punch Man", kv:722, image:"images/w257.png"};
+  var waifu258 = {name:"Yubelluna", series:"High School DxD", kv:98, image:"images/w258.png"};
+  var waifu259 = {name:"Meiko Ootsuka", series:"Yamada-kun to 7-nin no Majo", kv:69, image:"images/w259.png"};
+  var waifu260 = {name:"Megumi Tadokoro", series:"Shokugeki no Souma", kv:380, image:"images/w260.gif"};
+  var waifu261 = {name:"Olivier Mira Armstrong", series:"Fullmetal Alchemist", kv:176, image:"images/w261.png"};
+  var waifu262 = {name:"Erina Nakiri", series:"Shokugeki no Souma", kv:876, image:"images/w262.gif"};
+  var waifu263 = {name:"Veliona", series:"Honkai Impact 3rd", kv:92, image:"images/w263.png"};
+  var waifu264 = {name:"Yaemori Mini", series:"Kanojo, Okarishimasu", kv:69, image:"images/w264.png"};
+  var waifu265 = {name:"Mayu Kozue", series:"Magia Record", kv:47, image:"images/w265.png"};
+  var waifu266 = {name:"Ritz Malheur", series:"Final Fantasy Tactics Advance", kv:44, image:"images/w266.png"};
+  var waifu267 = {name:"Fuuko Ibuki", series:"Clannad", kv:132, image:"images/w267.gif"};
+  var waifu268 = {name:"Mirei Mikagura", series:"Digimon World Re: Digitize", kv:63, image:"images/w268.png"};
+  var waifu269 = {name:"Ronie Arabel", series:"Sword Art Online", kv:108, image:"images/w269.png"};
+  var waifu270 = {name:"Touka Takanashi", series:"Chuunibyou demo Koi ga Shitai!", kv:195, image:"images/w270.png"};
+  var waifu271 = {name:"Kazari Uiharu", series:"Toaru", kv:84, image:"images/w271.png"};
+  var waifu272 = {name:"Makoto (SAO)", series:"Sword Art Online: Memory Defrag", kv:55, image:"images/w272.png"};
+  var waifu273 = {name:"Rem Tokimiya", series:"Final Fantasy Type-0", kv:45, image:"images/w273.png"};
+  var waifu274 = {name:"Izumi Hashima", series:"Saenai Heroine no Sodatekata", kv:68, image:"images/w274.png"};
+  var waifu275 = {name:"Saki Kawasaki", series:"Yahari Ore no Seishun Love Comedy wa Machigatteiru.", kv:96, image:"images/w275.gif"};
+  var waifu276 = {name:"Ryou Fujibayashi", series:"GATE", kv:80, image:"images/w276.png"};
+  var waifu277 = {name:"Miyuki Shiba", series:"Mahouka Koukou no Rettousei", kv:319, image:"images/w277.png"};
+  var waifu278 = {name:"Grumpy Cat", series:":thinking:", kv:216, image:"images/w278.png"};
+  var waifu279 = {name:"Chelsea", series:"Akame ga Kill!", kv:502, image:"images/w279.png"};
+  var waifu280 = {name:"White (Spe)", series:"Pokémon Adventures", kv:113, image:"images/w280.png"};
+  var waifu281 = {name:"Akari Kizuna", series:"Vocaloid", kv:87, image:"images/w281.png"};
+  var waifu282 = {name:"Leonora Nakiri", series:"Shokugeki no Souma", kv:93, image:"images/w282.png"};
+  var waifu283 = {name:"Kanan Matsuura", series:"Love Live! Sunshine!!", kv:241, image:"images/w283.png"};
+  var waifu284 = {name:"Iris (PKMN)", series:"Pokémon Black/White", kv:130, image:"images/w284.png"};
+  var waifu285 = {name:"Exodia the Forbidden One", series:"Yu-Gi-Oh!", kv:91, image:"images/w285.png"};
+  var waifu286 = {name:"Celine", series:"Honkai Impact 3rd", kv:146, image:"images/w286.png"};
+  var waifu287 = {name:"Anna Heartfilia", series:"Fairy Tail", kv:61, image:"images/w287.png"};
+  var waifu288 = {name:"Tomo Mishima", series:"GATE", kv:44, image:"images/w288.png"};
+  var waifu289 = {name:"Miyabi Serizawa", series:"Domestic na Kanojo", kv:78, image:"images/w289.png"};
+  var waifu290 = {name:"Sumi Sakurasawa", series:"Kanojo, Okarishimasu", kv:108, image:"images/w290.png"};
+  var waifu291 = {name:"Scheherazade (Magi)", series:"Magi", kv:78, image:"images/w291.png"};
+  var waifu292 = {name:"Latifa Fleuranza", series:"Amagi Brilliant Park", kv:101, image:"images/w292.png"};
+  var waifu293 = {name:"Chigusa Hitachi", series:"DanMachi", kv:64, image:"images/w293.png"};
+  var waifu294 = {name:"Reiri Hida", series:"Masou Gakuen HxH", kv:82, image:"images/w294.png"};
+  var waifu295 = {name:"Raynare", series:"High School DxD", kv:198, image:"images/w295.png"};
+
+  var waifus = [waifu001, waifu002, waifu003, waifu004, waifu005, waifu006, waifu007,
+                waifu008, waifu009, waifu010, waifu011, waifu012, waifu013, waifu014,
+                waifu015, waifu016, waifu017, waifu018, waifu019, waifu020, waifu021,
+                waifu022, waifu023, waifu024, waifu025, waifu026, waifu027, waifu028,
+                waifu029, waifu030, waifu031, waifu032, waifu033, waifu034, waifu035,
+                waifu036, waifu037, waifu038, waifu039, waifu040, waifu041, waifu042,
+                waifu043, waifu044, waifu045, waifu046, waifu047, waifu048, waifu049,
+                waifu050, waifu051, waifu052, waifu053, waifu054, waifu055, waifu056,
+                waifu057, waifu058, waifu059, waifu060, waifu061, waifu062, waifu063,
+                waifu064, waifu065, waifu066, waifu067, waifu068, waifu069, waifu070,
+                waifu071, waifu072, waifu073, waifu074, waifu075, waifu076, waifu077,
+                waifu078, waifu079, waifu080, waifu081, waifu082, waifu083, waifu084,
+                waifu085, waifu086, waifu087, waifu088, waifu089, waifu090, waifu091,
+                waifu092, waifu093, waifu094, waifu095, waifu096, waifu097, waifu098,
+                waifu099, waifu100, waifu101, waifu102, waifu103, waifu104, waifu105,
+                waifu106, waifu107, waifu108, waifu109, waifu110, waifu111, waifu112,
+                waifu113, waifu114, waifu115, waifu116, waifu117, waifu118, waifu119,
+                waifu120, waifu121, waifu122, waifu123, waifu124, waifu125, waifu126,
+                waifu127, waifu128, waifu129, waifu130, waifu131, waifu132, waifu133,
+                waifu134, waifu135, waifu136, waifu137, waifu138, waifu139, waifu140,
+                waifu141, waifu142, waifu143, waifu144, waifu145, waifu146, waifu147,
+                waifu148, waifu149, waifu150, waifu151, waifu152, waifu153, waifu154,
+                waifu155, waifu156, waifu157, waifu158, waifu159, waifu160, waifu161,
+                waifu162, waifu163, waifu164, waifu165, waifu166, waifu167, waifu168,
+                waifu169, waifu170, waifu171, waifu172, waifu173, waifu174, waifu175,
+                waifu176, waifu177, waifu178, waifu179, waifu180, waifu181, waifu182,
+                waifu183, waifu184, waifu185, waifu186, waifu187, waifu188, waifu189,
+                waifu190, waifu191, waifu192, waifu193, waifu194, waifu195, waifu196,
+                waifu197, waifu198, waifu199, waifu200, waifu201, waifu202, waifu203,
+                waifu204, waifu205, waifu206, waifu207, waifu208, waifu209, waifu210,
+                waifu211, waifu212, waifu213, waifu214, waifu215, waifu216, waifu217,
+                waifu218, waifu219, waifu220, waifu221, waifu222, waifu223, waifu224,
+                waifu225, waifu226, waifu227, waifu228, waifu229, waifu230, waifu231,
+                waifu232, waifu233, waifu234, waifu235, waifu236, waifu237, waifu238,
+                waifu239, waifu240, waifu241, waifu242, waifu243, waifu244, waifu245,
+                waifu246, waifu247, waifu248, waifu249, waifu250, waifu251, waifu252,
+                waifu253, waifu254, waifu255, waifu256, waifu257, waifu258, waifu259,
+                waifu260, waifu261, waifu262, waifu263, waifu264, waifu265, waifu266,
+                waifu267, waifu268, waifu269, waifu270, waifu271, waifu272, waifu273,
+                waifu274, waifu275, waifu276, waifu277, waifu278, waifu279, waifu280,
+                waifu281, waifu282, waifu283, waifu284, waifu285, waifu286, waifu287,
+                waifu288, waifu289, waifu290, waifu291, waifu292, waifu293, waifu294,
+                waifu295],
+                tr;
 window.onload = function() {
-  var waifu1 = {name:"Mai Sakurajima", series:"Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai - Rascal Does Not Dream of Bunny Girl Senpai", kv:1256, image:"images/w1.gif"};
-  var waifu2 = {name:"Mashiro Shiina", series:"Sakura-sou no Pet na Kanojo - The Pet Girl of Sakurasou", kv:742, image:"images/w2.jpg"};
-  var waifu3 = {name:"Asuna Yuuki", series:"Sword Art Online", kv:1378, image:"images/w3.jpg"};
+  waifus.forEach((waifu, i, waifus) => {
+    if (!(i % 7)) {
+        tr = document.createElement('tr');
+        document.getElementById('waifuTable').appendChild(tr);
+    }
 
-  var waifus = [waifu1, waifu2, waifu3];
-  var crystal = document.createElement("img");
-  crystal.src = "Kakera_Crystal.png";
-  crystal.style.width = "16";
+    var crystal = document.createElement("img");
+    crystal.src = "Kakera_Crystal.png";
+    crystal.className = "crystal";
 
+    var td1 = document.createElement('td');
+    td1.className = "image";
+    var image = document.createElement("img");
+    image.src = waifu.image;
+    td1.appendChild(image);
+    waifuTable.appendChild(td1);
+
+    var td2 = document.createElement('td');
+    td2.className = "name";
+    td2.appendChild(document.createTextNode(waifu.name));
+    td1.appendChild(td2);
+
+    var td3 = document.createElement('td');
+    td3.className = "series";
+    td3.appendChild(document.createTextNode(waifu.series));
+    td2.appendChild(td3);
+
+    var td4 = document.createElement('td');
+    td4.className = "kv";
+    td4.appendChild(document.createTextNode(waifu.kv));
+    td3.appendChild(td4);
+    td4.appendChild(crystal);
+    });
+
+
+  /*
   var a = document.createElement("img");
   a.src = waifus[0].image;
   var b = document.getElementsByClassName("image");
@@ -151,6 +584,7 @@ window.onload = function() {
   var z = document.getElementsByClassName("kv");
   z[0].innerHTML = waifus[0].kv;
   z[0].appendChild(crystal);
+  */
 }
 </script>
 </html>
