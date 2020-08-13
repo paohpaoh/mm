@@ -29,7 +29,7 @@ td {
 .wrapper {
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: transparent;
   color: white;
   font-family: Arial;
   margin-top: -8px;
@@ -88,14 +88,6 @@ td {
   padding-right: 30px;
   width: 116px;
 }
-.hero-image {
-  background-image: url(images/background5a.jpg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-  width: 100%;
-}
 .sort-button {
   float: right;
   position: relative;
@@ -141,39 +133,50 @@ td {
   right: 0;
   z-index: 99;
 }
-
 /* Hide the items when the select box is closed: */
 .select-hide {
   display: none;
 }
-
 .select-items div:hover, .same-as-selected {
   background-color: rgba(0, 0, 0, 0.1);
+}
+#hero-image {
+  background-image: url(images/background5a.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  width: 100%;
 }
 #waifuTable {
   margin-left: auto;
   margin-right: auto;
 }
+#select-menu {
+}
+#sort-button {
+}
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <div class="hero-image">
+<div id="hero-image">
   <div class="header">the garden of waifu
     <div class="sort-button">
-      <button onclick="sortMarry()">Sort List</button>
+      <button id="sort-button" onclick="sortMarry()">Sort List</button>
     </div>
     <div class="select-box" style="width: 100px;">
-      <select>
+      <select id="select-menu">
         <option value="0">Select sort option:</option>
-        <option value="1">- [INACTIVE] Sort by kakera value</option>
-        <option value="2">- [INACTIVE] Sort by series</option>
+        <option value="1">- Sort by kakera value</option>
+        <option value="2">- Sort by series</option>
         <option value="3">- [INACTIVE] Sort by best girl</option>
         <option value="4">- [INACTIVE] View statistics</option>
       </select>
     </div>
   </div>
   <table id="waifuTable">
+
   </table>
   </div>
 </div>
@@ -194,7 +197,7 @@ $(window).load(function() {
             'blow-soft-left',
         ],                   // Horizontal movement animation names
         className: 'sakura', // Class name to use
-        fallSpeed: 10,        // Factor for petal fall speed
+        fallSpeed: 2,        // Factor for petal fall speed
         maxSize: 14,         // Maximum petal size
         minSize: 9,          // Minimum petal size
         newOn: 50000,          // Interval after which a new petal is added
@@ -204,7 +207,7 @@ $(window).load(function() {
     });
 });
 </script>
-<script type="text/javascript">
+<script type="text/javascript">   // initialize global waifu variables and array and populate table
   var waifu001 = {name:"Mai Sakurajima", series:"Seishun Buta Yarou", kv:1256, image:"images/w1.gif"};
   var waifu002 = {name:"Mashiro Shiina", series:"Sakura-sou no Pet na Kanojo", kv:759, image:"images/w2.png"};
   var waifu003 = {name:"Urara Shiraishi", series:"Yamada-kun to 7-nin no Majo", kv:247, image:"images/w3.png"};
@@ -505,6 +508,9 @@ $(window).load(function() {
   var waifu298 = {name:"Tsumugi Kotobuki", series:"K-On!", kv:377, image:"images/w298.gif"};
   var waifu299 = {name:"Iroha Isshiki", series:"Yahari Ore no Seishun Love Comedy wa Machigatteiru.", kv:332, image:"images/w299.gif"};
   var waifu300 = {name:"Hotaru Mizushima", series:"Netsuzou TRap", kv:377, image:"images/w300.png"};
+  var waifu301 = {name:"Moeha Fujiwara", series:"Kaguya-sama wa Kokurasetai", kv:86, image:"images/w301.png"};
+  var waifu302 = {name:"Bea", series:"Pokémon Sword/Shield", kv:224, image:"images/w302.gif"};
+  var waifu303 = {name:"Touka Satomi", series:"Magia Record", kv:45, image:"images/w303.png"};
 
   var waifus = [waifu001, waifu002, waifu003, waifu004, waifu005, waifu006, waifu007,
                 waifu008, waifu009, waifu010, waifu011, waifu012, waifu013, waifu014,
@@ -548,10 +554,13 @@ $(window).load(function() {
                 waifu274, waifu275, waifu276, waifu277, waifu278, waifu279, waifu280,
                 waifu281, waifu282, waifu283, waifu284, waifu285, waifu286, waifu287,
                 waifu288, waifu289, waifu290, waifu291, waifu292, waifu293, waifu294,
-                waifu295, waifu296, waifu297, waifu298, waifu299, waifu300],
+                waifu295, waifu296, waifu297, waifu298, waifu299, waifu300, waifu301,
+                302, 303],
                 tr;
-var waifusCopy = waifus.slice(0);
 
+var waifusCopy = waifus.slice(0);
+</script>
+<script>   //sort comparison functions
 function compareSeries(waifu1, waifu2) {
   if (waifu1.series < waifu2.series) {
     return -1;
@@ -562,9 +571,43 @@ function compareSeries(waifu1, waifu2) {
   return 0;
 }
 
-waifusCopy.sort(compareSeries);
+function compareKv(waifu1, waifu2) {
+  if (waifu1.kv < waifu2.kv) {
+    return 1;
+  }
+  if (waifu1.kv > waifu2.kv) {
+    return -1;
+  }
+  return 0;
+}
 
-window.onload = function() {                //create tables based on number of waifus
+waifusCopy.sort(compareSeries);
+window.onload = populateWaifus();
+function sortMarry() {
+  var selectOption = document.getElementById("select-menu").selectedIndex;
+
+  switch (document.getElementById("select-menu").selectedIndex) {
+    case 0:   //list title; do nothing
+      break;
+    case 1:   //kakera value
+      waifusCopy.sort(compareKv);
+      document.getElementById("waifuTable").innerHTML = ' ';
+      populateWaifus();
+      $("hero-image").load(window.location.href + "hero-image");
+      break;
+    case 2:   //series
+      waifusCopy.sort(compareSeries);
+      document.getElementById("waifuTable").innerHTML = ' ';
+      populateWaifus();
+      break;
+    case 3:   //best girl
+      break;
+    case 4:   //view statistics
+      break;
+  }
+}
+
+function populateWaifus() {                //create tables based on number of waifus
   waifusCopy.forEach((waifu, i, waifus) => {
     if (!(i % 7)) {
         tr = document.createElement('tr');
@@ -597,7 +640,7 @@ window.onload = function() {                //create tables based on number of w
     td4.appendChild(document.createTextNode(waifu.kv));
     td3.appendChild(td4);
     td4.appendChild(crystal);
-    });
+  });
 
 
   /*
